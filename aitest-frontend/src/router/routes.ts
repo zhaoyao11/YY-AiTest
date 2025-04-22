@@ -1,4 +1,5 @@
-import AdminManageView from "@/views/admin/AdminManageView.vue";
+import ACCESS_ENUM from "@/access/accessEnum";
+import AdminUserView from "@/views/admin/AdminUserView.vue";
 import HomeView from "@/views/HomeView.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
@@ -21,7 +22,10 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin",
     name: "管理页面",
-    component: AdminManageView,
+    component: AdminUserView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
   },
 
   {

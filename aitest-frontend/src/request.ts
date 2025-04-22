@@ -25,15 +25,15 @@ myAxios.interceptors.response.use(
     const { data } = response.data;
 
     //未登录
-    if (data.code === 40100) {
-      //不是获取用户信息的请求，并且用户当前没在登录页面，则跳转到登录页面
-      if (
-        !response.request.responseURL.includes("/user/get/login") &&
-        !window.location.pathname.includes("/user/login")
-      ) {
-        window.location.href = `/user/login?redirect=${window.location.href}`;
-      }
-    }
+    // if (data.code === 40100) {
+    //   //不是获取用户信息的请求，并且用户当前没在登录页面，则跳转到登录页面
+    //   if (
+    //     !response.request.responseURL.includes("/user/get/login") &&
+    //     !window.location.pathname.includes("/user/login")
+    //   ) {
+    //     window.location.href = `/user/login?redirect=${window.location.href}`;
+    //   }
+    // }
 
     return response;
   },

@@ -23,12 +23,14 @@
           <a-avatar>
             <img alt="avatar" :src="userInfo.userAvatar" />
           </a-avatar>
-          <span style="margin-left: 10px">
+          <span style="margin-left: 10px; font-weight: bolder">
             {{ userInfo.userName }}
           </span>
         </template>
         <template v-else>
-          <a-button type="primary">登录</a-button>
+          <a-button @click="router.push({ path: '/user/login' })" type="primary"
+            >登录</a-button
+          >
         </template>
       </div>
     </a-col>
@@ -41,6 +43,7 @@ import { useRouter } from "vue-router";
 import { routes } from "@/router/routes";
 import { useLoginUserStore } from "@/store/userStore";
 import API from "@/api";
+import checkAccess from "@/access/checkAccess";
 
 //当前选中的菜单项
 const currentMenu = ref<string[]>(["/"]);
@@ -49,7 +52,6 @@ const router = useRouter();
 const userInfo = ref<API.LoginUserVO>({});
 //获取用户登录信息
 const loginUserStore = useLoginUserStore();
-console.log(loginUserStore.loginUser, "loginUserStore");
 userInfo.value = loginUserStore.loginUser;
 
 //路由跳转时，自动更新选中的菜单项
@@ -59,6 +61,10 @@ router.afterEach((to) => {
 //获取非隐藏页面菜单
 const visibleRoutes = routes.filter((item) => {
   if (item.meta?.isHidden) {
+    return false;
+  }
+  //根据权限过滤菜单
+  if (!checkAccess(loginUserStore.loginUser, item.meta?.access as string)) {
     return false;
   }
   return true;
