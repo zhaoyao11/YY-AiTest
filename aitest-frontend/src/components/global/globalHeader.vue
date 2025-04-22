@@ -19,7 +19,17 @@
     </a-col>
     <a-col flex="100px">
       <div>
-        <a-button type="primary">登录</a-button>
+        <template v-if="userInfo.id">
+          <a-avatar>
+            <img alt="avatar" :src="userInfo.userAvatar" />
+          </a-avatar>
+          <span style="margin-left: 10px">
+            {{ userInfo.userName }}
+          </span>
+        </template>
+        <template v-else>
+          <a-button type="primary">登录</a-button>
+        </template>
       </div>
     </a-col>
   </a-row>
@@ -29,9 +39,19 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { routes } from "@/router/routes";
+import { useLoginUserStore } from "@/store/userStore";
+import API from "@/api";
+
 //当前选中的菜单项
 const currentMenu = ref<string[]>(["/"]);
 const router = useRouter();
+//用户信息
+const userInfo = ref<API.LoginUserVO>({});
+//获取用户登录信息
+const loginUserStore = useLoginUserStore();
+console.log(loginUserStore.loginUser, "loginUserStore");
+userInfo.value = loginUserStore.loginUser;
+
 //路由跳转时，自动更新选中的菜单项
 router.afterEach((to) => {
   currentMenu.value = [to.path];
