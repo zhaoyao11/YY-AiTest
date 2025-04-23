@@ -1,4 +1,8 @@
 import ACCESS_ENUM from "@/access/accessEnum";
+import AdminAnswerView from "@/views/admin/AdminAnswerView.vue";
+import AdminAppView from "@/views/admin/AdminAppView.vue";
+import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
+import AdminScoreView from "@/views/admin/AdminScoreView.vue";
 import AdminUserView from "@/views/admin/AdminUserView.vue";
 import HomeView from "@/views/HomeView.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
@@ -23,6 +27,38 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/admin",
     name: "管理页面",
     component: AdminUserView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/app",
+    name: "应用管理页面",
+    component: AdminAppView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/score",
+    name: "评分管理页面",
+    component: AdminScoreView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/answer",
+    name: "回答管理页面",
+    component: AdminAnswerView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/question",
+    name: "题目管理页面",
+    component: AdminQuestionView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
     },
