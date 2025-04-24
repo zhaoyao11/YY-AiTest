@@ -4,6 +4,7 @@ import AdminAppView from "@/views/admin/AdminAppView.vue";
 import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
 import AdminScoreView from "@/views/admin/AdminScoreView.vue";
 import AdminUserView from "@/views/admin/AdminUserView.vue";
+import AppDetailView from "@/views/app/AppDetailView.vue";
 import HomeView from "@/views/HomeView.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
@@ -61,6 +62,15 @@ export const routes: Array<RouteRecordRaw> = [
     component: AdminQuestionView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/app/detail/:id",
+    name: "应用详情页面",
+    component: AppDetailView,
+    props: true,
+    meta: {
+      isHidden: true,
     },
   },
 

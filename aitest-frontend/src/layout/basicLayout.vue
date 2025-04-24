@@ -20,6 +20,19 @@ import globalHeader from "@/components/global/globalHeader.vue";
 </script>
 
 <style scoped>
+#basicLayout .header {
+  margin-bottom: 15px;
+  box-shadow: #eee 1px 1px 5px;
+}
+
+#basicLayout .content {
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto 15px;
+  padding: 10px;
+}
+
 .footer {
   margin-bottom: 16px;
   background-color: #ffffff;

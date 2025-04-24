@@ -21,7 +21,7 @@ myAxios.interceptors.request.use(
 // 添加响应拦截器
 myAxios.interceptors.response.use(
   function (response) {
-    console.log(response.data);
+    // console.log(response.data);
     const { data } = response.data;
 
     //未登录
