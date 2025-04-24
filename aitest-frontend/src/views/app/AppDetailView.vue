@@ -36,9 +36,21 @@
       <a-space class="lineButtons">
         <a-button type="primary">开始答题</a-button>
         <a-button>分享应用</a-button>
-        <a-button v-if="isCurrentUser">设置题目</a-button>
-        <a-button v-if="isCurrentUser">设置评分</a-button>
-        <a-button v-if="isCurrentUser">修改应用</a-button>
+        <a-button
+          v-if="isCurrentUser"
+          @click="$router.push(`/add/question/${props.id}`)"
+          >设置题目</a-button
+        >
+        <a-button
+          v-if="isCurrentUser"
+          @click="$router.push(`/add/score/${props.id}`)"
+          >设置评分</a-button
+        >
+        <a-button
+          v-if="isCurrentUser"
+          @click="$router.push(`/add/app/${props.id}`)"
+          >修改应用</a-button
+        >
       </a-space>
     </a-card>
   </div>
@@ -46,11 +58,12 @@
 
 <script lang="ts" setup>
 import { getAppVoByIdUsingGet } from "@/api/appController";
-import { defineProps, onMounted, withDefaults, ref, computed } from "vue";
+import { defineProps, withDefaults, ref, computed, watchEffect } from "vue";
 import dayjs from "dayjs";
 import API from "@/api";
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/constants/app";
 import { useLoginUserStore } from "@/store/userStore";
+import message from "@arco-design/web-vue/es/message";
 interface Props {
   id: number;
 }
@@ -70,12 +83,19 @@ const isCurrentUser = computed(() => {
 
 //根据id获取当前应用信息
 const getAppInfo = async () => {
+  if (!props.id) {
+    return;
+  }
   const res = await getAppVoByIdUsingGet({ id: props.id });
   //   console.log(res);
-  AppInfo.value = res.data.data;
+  if (res.data.code === 0) {
+    AppInfo.value = res.data.data;
+  } else {
+    message.error("获取数据失败，" + res.data.message);
+  }
 };
 
-onMounted(() => {
+watchEffect(() => {
   getAppInfo();
 });
 

@@ -1,4 +1,7 @@
 import ACCESS_ENUM from "@/access/accessEnum";
+import AddAppView from "@/views/add/AddAppView.vue";
+import AddQuestionView from "@/views/add/AddQuestionView.vue";
+import AddScoringView from "@/views/add/AddScoringView.vue";
 import AdminAnswerView from "@/views/admin/AdminAnswerView.vue";
 import AdminAppView from "@/views/admin/AdminAppView.vue";
 import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
@@ -68,6 +71,33 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/app/detail/:id",
     name: "应用详情页面",
     component: AppDetailView,
+    props: true,
+    meta: {
+      isHidden: true,
+    },
+  },
+  {
+    path: "/add/question/:appId",
+    name: "设置题目页面",
+    component: AddQuestionView,
+    props: true,
+    meta: {
+      isHidden: true,
+    },
+  },
+  {
+    path: "/add/app/:id",
+    name: "修改应用页面",
+    component: AddAppView,
+    props: true,
+    meta: {
+      isHidden: true,
+    },
+  },
+  {
+    path: "/add/score/:appId",
+    name: "修改评分页面",
+    component: AddScoringView,
     props: true,
     meta: {
       isHidden: true,
