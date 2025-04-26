@@ -34,21 +34,25 @@
         </a-col>
       </a-row>
       <a-space class="lineButtons">
-        <a-button type="primary">开始答题</a-button>
+        <a-button
+          type="primary"
+          @click="$router.push(`/do/answer/${props.appId}`)"
+          >开始答题</a-button
+        >
         <a-button>分享应用</a-button>
         <a-button
           v-if="isCurrentUser"
-          @click="$router.push(`/add/question/${props.id}`)"
+          @click="$router.push(`/add/question/${props.appId}`)"
           >设置题目</a-button
         >
         <a-button
           v-if="isCurrentUser"
-          @click="$router.push(`/add/score/${props.id}`)"
+          @click="$router.push(`/add/score/${props.appId}`)"
           >设置评分</a-button
         >
         <a-button
           v-if="isCurrentUser"
-          @click="$router.push(`/add/app/${props.id}`)"
+          @click="$router.push(`/add/app/${props.appId}`)"
           >修改应用</a-button
         >
       </a-space>
@@ -65,10 +69,10 @@ import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/constants/app";
 import { useLoginUserStore } from "@/store/userStore";
 import message from "@arco-design/web-vue/es/message";
 interface Props {
-  id: number;
+  appId: number;
 }
 const props = withDefaults(defineProps<Props>(), {
-  id: 0,
+  appId: 0,
 });
 const AppInfo = ref<API.AppVO>({});
 
@@ -83,10 +87,10 @@ const isCurrentUser = computed(() => {
 
 //根据id获取当前应用信息
 const getAppInfo = async () => {
-  if (!props.id) {
+  if (!props.appId) {
     return;
   }
-  const res = await getAppVoByIdUsingGet({ id: props.id });
+  const res = await getAppVoByIdUsingGet({ id: props.appId as number });
   //   console.log(res);
   if (res.data.code === 0) {
     AppInfo.value = res.data.data;
@@ -99,7 +103,7 @@ watchEffect(() => {
   getAppInfo();
 });
 
-console.log(props.id, "id");
+console.log(props.appId, "appid");
 </script>
 
 <style scoped>

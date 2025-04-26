@@ -7,6 +7,9 @@ import AdminAppView from "@/views/admin/AdminAppView.vue";
 import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
 import AdminScoreView from "@/views/admin/AdminScoreView.vue";
 import AdminUserView from "@/views/admin/AdminUserView.vue";
+import AnswerResultView from "@/views/answer/AnswerResultView.vue";
+import DoAnswerView from "@/views/answer/DoAnswerView.vue";
+import MyAnswerView from "@/views/answer/MyAnswerView.vue";
 import AppDetailView from "@/views/app/AppDetailView.vue";
 import HomeView from "@/views/HomeView.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
@@ -16,7 +19,7 @@ import { RouteRecordRaw } from "vue-router";
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "home",
+    name: "首页",
     component: HomeView,
   },
   {
@@ -68,7 +71,7 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/app/detail/:id",
+    path: "/app/detail/:appId",
     name: "应用详情页面",
     component: AppDetailView,
     props: true,
@@ -113,20 +116,35 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/hide",
-    name: "隐藏页面",
-    component: HomeView,
+    path: "/do/answer/:appId",
+    name: "做题页面",
+    component: DoAnswerView,
+    props: true,
     meta: {
       isHidden: true,
     },
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/answer/result/:data",
+    name: "结果页面",
+    component: AnswerResultView,
+    props: true,
+    meta: {
+      isHidden: true,
+    },
+  },
+  {
+    path: "/my/answer",
+    name: "我的答题",
+    component: MyAnswerView,
+  },
+  {
+    path: "/hide",
+    name: "隐藏页面",
+    component: HomeView,
+    meta: {
+      isHidden: true,
+      access: ACCESS_ENUM.USER,
+    },
   },
 ];

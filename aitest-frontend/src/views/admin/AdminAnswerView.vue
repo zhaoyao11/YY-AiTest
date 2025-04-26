@@ -9,12 +9,6 @@
       <a-form-item field="appId" label="应用ID">
         <a-input v-model="formSearchParams.appId" placeholder="请输入应用ID" />
       </a-form-item>
-      <!-- <a-form-item field="userProfile" label="用户简介">
-        <a-input
-          v-model="formSearchParams.userProfile"
-          placeholder="请输入用户简介"
-        />
-      </a-form-item> -->
       <a-form-item>
         <a-button type="primary" html-type="submit">搜索</a-button>
       </a-form-item>
@@ -53,7 +47,10 @@ import { ref, watchEffect } from "vue";
 import API from "@/api";
 import message from "@arco-design/web-vue/es/message";
 import dayjs from "dayjs";
-import { listUserAnswerByPageUsingPost } from "@/api/userAnswerController";
+import {
+  deleteUserAnswerUsingPost,
+  listUserAnswerByPageUsingPost,
+} from "@/api/userAnswerController";
 
 //查找用户参数
 const formSearchParams = ref<API.UserAnswerQueryRequest>({});
@@ -105,8 +102,7 @@ const onPageChange = (page: number) => {
 
 //删除按钮
 const onDelete = async (record: API.User) => {
-  // console.log("需要删除的用户为：" + record.id + record.userName);
-  const res = await deleteUserUsingPost({ id: record.id });
+  const res = await deleteUserAnswerUsingPost({ id: record.id });
   if (res.data.code === 0) {
     message.success("删除成功");
     loadData();
@@ -155,6 +151,7 @@ const columns = [
   {
     title: "结果图标",
     dataIndex: "resultPicture",
+    slotName: "userAvatar",
   },
   {
     title: "得分",
