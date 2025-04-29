@@ -100,6 +100,10 @@ const loadData = async () => {
     sortOrder: "descend",
   });
   if (res_question.data.code === 0) {
+    if (res_question.data.data.records.length === 0) {
+      message.warning("该应用当前没有题目");
+      return;
+    }
     questionList.value = res_question.data.data.records[0].questionContent;
     message.success("题目获取成功");
   } else {

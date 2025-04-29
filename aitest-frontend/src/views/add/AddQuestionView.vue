@@ -2,6 +2,7 @@
   <div id="add-question-view">
     <h2>创建题目</h2>
     <a-form
+      :model="QuestionContentList"
       class="form"
       :style="{ width: '480px' }"
       label-align="left"
@@ -14,9 +15,20 @@
       </a-form-item>
 
       <a-form-item label="题目列表" :content-flex="false" :merge-props="false">
-        <a-button @click="addQuestionFromBottom(QuestionContentList.length)"
+        <a-button
+          style="margin-right: 20px"
+          @click="addQuestionFromBottom(QuestionContentList.length)"
           >底部添加题目</a-button
         >
+
+        <AiQuestonDrawer
+          :appId="props.appId"
+          :onSuccess="onSuccess"
+          :onSSESuccess="onAiGenerateSuccessSSE"
+          :onSSEClose="onSSEClose"
+          :onSSEStart="onSSEStart"
+        />
+
         <!-- 遍历每一个题目 -->
         <div v-for="(item, index) in QuestionContentList" :key="index">
           <a-space>
@@ -36,7 +48,7 @@
             >
           </a-space>
 
-          <a-form label-align="left">
+          <a-form label-align="left" :model="item">
             <a-form-item :label="`题目 ${index + 1} 标题`">
               <a-input v-model="item.title" placeholder="请输入题目标题" />
             </a-form-item>
@@ -52,9 +64,9 @@
             <a-form-item
               v-for="(option, optionIndex) in item.options"
               :key="optionIndex"
-              :label="`选项 ${index + 1} `"
+              :label="`选项 ${optionIndex + 1} `"
             >
-              <a-form>
+              <a-form :model="option">
                 <a-form-item label="选项key">
                   <a-input v-model="option.key" placeholder="请输入选项key" />
                 </a-form-item>
@@ -112,12 +124,13 @@ import {
 } from "@/api/questionController";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
+import AiQuestonDrawer from "./components/AiQuestonDrawer.vue";
 const router = useRouter();
 interface Props {
-  appId: number;
+  appId: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  appId: 0,
+  appId: "",
 });
 console.log(props.appId, "问题对应的id");
 
@@ -143,7 +156,7 @@ const addQuestionOption = (index: number) => {
     key: "",
     value: "",
     result: "",
-    score: 0,
+    score: "0",
   });
 };
 //在特定位置给题目加入选项
@@ -155,7 +168,7 @@ const addOptionFromIndex = (
     key: "",
     value: "",
     result: "",
-    score: 0,
+    score: "0",
   });
 };
 
@@ -181,7 +194,7 @@ const lodaData = async () => {
   if (!props.appId) {
     return;
   }
-  const res = await listQuestionVoByPageUsingPost({ id: props.appId });
+  const res = await listQuestionVoByPageUsingPost({ id: props.appId as any });
   if (res.data.code === 0) {
     oldQuestion.value = res.data.data.records[0];
     if (oldQuestion.value) {
@@ -195,6 +208,14 @@ const lodaData = async () => {
 watchEffect(() => {
   lodaData();
 });
+
+const onSuccess = (result: API.QuestionContentDTO[]) => {
+  message.success(`AI 生成题目成功，生成 ${result.length} 道题目`);
+  QuestionContentList.value = {
+    ...QuestionContentList.value,
+    ...result,
+  };
+};
 
 //点击提交按钮
 const handleSubmit = async () => {
@@ -210,7 +231,7 @@ const handleSubmit = async () => {
     });
   } else {
     res = await addQuestionUsingPost({
-      appId: props.appId,
+      appId: props.appId as any,
       questionContent: QuestionContentList.value,
     });
   }
@@ -224,6 +245,29 @@ const handleSubmit = async () => {
   } else {
     message.error("操作失败，" + res.data.message);
   }
+};
+/**
+ * AI 生成题目成功后执行（SSE）
+ */
+const onAiGenerateSuccessSSE = (result: API.QuestionContentDTO) => {
+  QuestionContentList.value = [...QuestionContentList.value, result];
+  console.log(result);
+};
+
+/**
+ * SSE 开始生成
+ * @param event
+ */
+const onSSEStart = (event: any) => {
+  message.success("开始生成");
+};
+
+/**
+ * SSE 生成完毕
+ * @param event
+ */
+const onSSEClose = (event: any) => {
+  message.success("生成完毕");
 };
 </script>
 

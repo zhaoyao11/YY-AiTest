@@ -56,7 +56,7 @@ import { Message } from "@arco-design/web-vue";
  * 定义组件属性类型
  */
 interface Props {
-  biz: string;
+  biz?: string;
   onChange?: (url: string) => void;
   value?: string;
 }

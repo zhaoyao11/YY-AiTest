@@ -65,11 +65,19 @@ import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 const router = useRouter();
 interface Props {
-  id: number;
+  id: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  id: 0,
+  id: () => {
+    return "";
+  },
 });
+const propsFlag = ref(false);
+if (props.id !== ":id") {
+  propsFlag.value = true;
+}
+console.log(propsFlag.value);
+
 const AppInfo = ref<API.AppVO>({});
 
 //旧数据
@@ -77,7 +85,10 @@ const oldAppInfo = ref<API.AppVO>({});
 
 //根据id获取当前应用信息
 const getAppInfo = async () => {
-  const res = await getAppVoByIdUsingGet({ id: props.id });
+  if (!propsFlag.value) {
+    return;
+  }
+  const res = await getAppVoByIdUsingGet({ id: props.id as any });
   //   console.log(res);
   if (res.data.code === 0) {
     oldAppInfo.value = res.data.data;
@@ -93,10 +104,10 @@ watchEffect(() => {
 
 const handleSubmit = async () => {
   let res;
-  if (props.id) {
+  if (propsFlag.value) {
     //如果是修改
     res = await editAppUsingPost({
-      id: props.id,
+      id: props.id as any,
       ...AppInfo.value,
     });
   } else {
@@ -109,7 +120,7 @@ const handleSubmit = async () => {
   if (res.data.code === 0) {
     message.success("操作成功，即将跳转到详情页");
     setTimeout(() => {
-      router.push(`/app/detail/${props.id || res.data.data}`);
+      router.push(`/app/detail/${propsFlag.value ? props.id : res.data.data}`);
     }, 2500);
   } else {
     message.error("操作失败 " + res.data.message);

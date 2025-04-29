@@ -23,10 +23,18 @@ export const useLoginUserStore = defineStore(
       }
     }
 
+    //退出登录
+    function logout() {
+      loginUser.value = { userName: "未登录", userRole: ACCESS_ENUM.NOT_LOGIN };
+      //清除持久化
+      localStorage.removeItem("loginUser");
+    }
+
     return {
       loginUser,
       setLoginUser,
       fetchLoginUser,
+      logout,
     };
   },
   {

@@ -1,7 +1,11 @@
 <template>
   <a-row class="grid-demo" style="margin-bottom: 16px" :wrap="false">
     <a-col flex="100px">
-      <div class="icon-logo">
+      <div
+        class="icon-logo"
+        @click="$router.push({ path: '/' })"
+        style="cursor: pointer"
+      >
         <img src="@/assets/logo.png" alt="logo" style="width: 32px" />
         <span style="font-weight: bolder; margin-left: 8px">YY-Test</span>
       </div>
@@ -20,12 +24,18 @@
     <a-col flex="100px">
       <div>
         <template v-if="userInfo.id">
-          <a-avatar>
-            <img alt="avatar" :src="userInfo.userAvatar" />
-          </a-avatar>
-          <span style="margin-left: 10px; font-weight: bolder">
-            {{ userInfo.userName }}
-          </span>
+          <a-dropdown @select="handleSelect">
+            <a-avatar>
+              <img alt="avatar" :src="userInfo.userAvatar" />
+            </a-avatar>
+            <span style="font-weight: bolder">
+              {{ userInfo.userName }}
+            </span>
+            <template #content>
+              <a-doption @click="onClickUserInfo">个人信息</a-doption>
+              <a-doption @click="onLoginOut">退出登录</a-doption>
+            </template>
+          </a-dropdown>
         </template>
         <template v-else>
           <a-button @click="router.push({ path: '/user/login' })" type="primary"
@@ -38,13 +48,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { routes } from "@/router/routes";
 import { useLoginUserStore } from "@/store/userStore";
 import API from "@/api";
 import checkAccess from "@/access/checkAccess";
-
+//向父组件传递
+const emit = defineEmits(["show-modal"]);
 //当前选中的菜单项
 const currentMenu = ref<string[]>(["/"]);
 const router = useRouter();
@@ -75,6 +86,21 @@ const onClickMenu = (key: string) => {
   router.push({
     path: key,
   });
+};
+//点击用户详情
+const handleSelect = () => {
+  console.log("下拉菜单展开");
+};
+//点击个人信息
+const onClickUserInfo = () => {
+  //向父组件发送事件
+  emit("show-modal");
+};
+//点击退出登录
+const onLoginOut = () => {
+  loginUserStore.logout();
+  //点击后页面自动刷新
+  window.location.reload();
 };
 </script>
 

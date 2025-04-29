@@ -1,8 +1,8 @@
 declare namespace API {
   type AiGenerateQuestionRequest = {
     appId?: number;
-    optionNumber?: number;
-    questionNumber?: number;
+    optionNumber?: number | string;
+    questionNumber?: number | string;
   };
 
   type aiGenerateQuestionSSETestUsingGETParams = {
@@ -331,7 +331,7 @@ declare namespace API {
   type Option = {
     key?: string;
     result?: string;
-    score?: number;
+    score?: number | string;
     value?: string;
   };
 

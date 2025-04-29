@@ -90,12 +90,9 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/add/app/:id",
-    name: "修改应用页面",
+    name: "创建应用",
     component: AddAppView,
     props: true,
-    meta: {
-      isHidden: true,
-    },
   },
   {
     path: "/add/score/:appId",

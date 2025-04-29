@@ -69,10 +69,10 @@ import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/constants/app";
 import { useLoginUserStore } from "@/store/userStore";
 import message from "@arco-design/web-vue/es/message";
 interface Props {
-  appId: number;
+  appId: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  appId: 0,
+  appId: "",
 });
 const AppInfo = ref<API.AppVO>({});
 
@@ -90,7 +90,7 @@ const getAppInfo = async () => {
   if (!props.appId) {
     return;
   }
-  const res = await getAppVoByIdUsingGet({ id: props.appId as number });
+  const res = await getAppVoByIdUsingGet({ id: props.appId as any });
   //   console.log(res);
   if (res.data.code === 0) {
     AppInfo.value = res.data.data;
