@@ -326,6 +326,7 @@ declare namespace API {
     userName?: string;
     userProfile?: string;
     userRole?: string;
+    userAccount?: string;
   };
 
   type Option = {
@@ -854,5 +855,6 @@ declare namespace API {
     userName?: string;
     userProfile?: string;
     userRole?: string;
+    userAccount?: string;
   };
 }

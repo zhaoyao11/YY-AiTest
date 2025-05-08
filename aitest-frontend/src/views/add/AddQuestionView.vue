@@ -194,7 +194,9 @@ const lodaData = async () => {
   if (!props.appId) {
     return;
   }
-  const res = await listQuestionVoByPageUsingPost({ id: props.appId as any });
+  const res = await listQuestionVoByPageUsingPost({
+    appId: props.appId as any,
+  });
   if (res.data.code === 0) {
     oldQuestion.value = res.data.data.records[0];
     if (oldQuestion.value) {

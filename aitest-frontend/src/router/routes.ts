@@ -2,6 +2,7 @@ import ACCESS_ENUM from "@/access/accessEnum";
 import AddAppView from "@/views/add/AddAppView.vue";
 import AddQuestionView from "@/views/add/AddQuestionView.vue";
 import AddScoringView from "@/views/add/AddScoringView.vue";
+import AdminAnalyzeView from "@/views/admin/AdminAnalyzeView.vue";
 import AdminAnswerView from "@/views/admin/AdminAnswerView.vue";
 import AdminAppView from "@/views/admin/AdminAppView.vue";
 import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
@@ -71,6 +72,14 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "/admin/analyze",
+    name: "统计分析",
+    component: AdminAnalyzeView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
     path: "/app/detail/:appId",
     name: "应用详情页面",
     component: AppDetailView,
@@ -130,6 +139,7 @@ export const routes: Array<RouteRecordRaw> = [
       isHidden: true,
     },
   },
+
   {
     path: "/my/answer",
     name: "我的答题",

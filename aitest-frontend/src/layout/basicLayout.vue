@@ -24,12 +24,12 @@ const isModalVisible = ref(false);
 //显示模态框
 const showModal = () => {
   isModalVisible.value = true;
-  console.log("模态框显示");
+  // console.log("模态框显示");
 };
 //关闭模态框
 const closeModal = () => {
   isModalVisible.value = false;
-  console.log("模态框关闭");
+  // console.log("模态框关闭");
 };
 </script>
 

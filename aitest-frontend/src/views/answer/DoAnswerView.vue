@@ -38,7 +38,6 @@ import {
   generateUserAnswerIdUsingGet,
 } from "@/api/userAnswerController";
 import { useRouter } from "vue-router";
-import { useLoginUserStore } from "@/store/userStore";
 
 //控制是否显示加载
 const isLoadingHidden = ref(true);
@@ -91,14 +90,18 @@ const loadData = async () => {
   } else {
     message.error("应用获取失败 " + res_app.data.message);
   }
-  //   console.log(res_app, "res_app");
+  console.log(res_app, "res_app");
 
   //获取题目信息
   const res_question = await listQuestionVoByPageUsingPost({
-    id: props.appId as any,
+    appId: props.appId as any,
+    current: 1,
+    pageSize: 1,
     sortField: "createTime",
     sortOrder: "descend",
   });
+  console.log(res_question, "题目信息");
+
   if (res_question.data.code === 0) {
     if (res_question.data.data.records.length === 0) {
       message.warning("该应用当前没有题目");

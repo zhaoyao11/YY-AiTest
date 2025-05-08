@@ -61,7 +61,7 @@ const loadData = async () => {
 
   if (res.data.code === 0) {
     dataList.value = res.data.data.records;
-    console.log(dataList.value);
+    // console.log(dataList.value);
 
     total.value = res.data.data.total;
   } else {

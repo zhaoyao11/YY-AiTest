@@ -25,12 +25,15 @@
       <div>
         <template v-if="userInfo.id">
           <a-dropdown @select="handleSelect">
-            <a-avatar>
-              <img alt="avatar" :src="userInfo.userAvatar" />
-            </a-avatar>
-            <span style="font-weight: bolder">
-              {{ userInfo.userName }}
-            </span>
+            <a-space style="margin-top: 15px"
+              ><a-avatar :size="45">
+                <img alt="avatar" :src="userInfo.userAvatar" />
+              </a-avatar>
+              <span style="font-weight: bolder; font-size: 16px">
+                {{ userInfo.userName }}
+              </span>
+            </a-space>
+
             <template #content>
               <a-doption @click="onClickUserInfo">个人信息</a-doption>
               <a-doption @click="onLoginOut">退出登录</a-doption>
@@ -89,7 +92,7 @@ const onClickMenu = (key: string) => {
 };
 //点击用户详情
 const handleSelect = () => {
-  console.log("下拉菜单展开");
+  // console.log("下拉菜单展开");
 };
 //点击个人信息
 const onClickUserInfo = () => {

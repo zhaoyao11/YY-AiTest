@@ -2,7 +2,7 @@
   <div id="userDetailInfo">
     <a-modal
       :visible="props.visible"
-      title="Modal Form"
+      title="个人信息"
       @cancel="handleCancel"
       @before-ok="handleBeforeOk"
     >
@@ -13,10 +13,10 @@
             v-model="UserInfoForm.UserName"
           />
         </a-form-item>
-        <a-form-item field="UserAccount" label="用户账号">
+        <a-form-item field="UserProfile" label="个人简介">
           <a-input
-            placeholder="请输入你的账号"
-            v-model="UserInfoForm.UserAccount"
+            placeholder="请输入你的个人简介"
+            v-model="UserInfoForm.UserProfile"
           />
         </a-form-item>
         <a-form-item field="UserAvatar" label="用户头像">
@@ -31,8 +31,20 @@
 </template>
 
 <script lang="ts" setup>
-import { withDefaults, defineProps, reactive, ref, defineEmits } from "vue";
-import PictureUploader from "../PictureUploader.vue";
+import {
+  getUserVoByIdUsingGet,
+  updateMyUserUsingPost,
+} from "@/api/userController";
+import { useLoginUserStore } from "@/store/userStore";
+import message from "@arco-design/web-vue/es/message";
+import {
+  withDefaults,
+  defineProps,
+  reactive,
+  defineEmits,
+  onMounted,
+} from "vue";
+// import PictureUploader from "../PictureUploader.vue";
 const emit = defineEmits(["close-modal"]);
 interface Props {
   visible: boolean;
@@ -40,22 +52,49 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
 });
+
 const UserInfoForm = reactive({
   UserName: "",
   UserAvatar: "",
-  UserAccount: "",
+  UserProfile: "",
 });
-const handleBeforeOk = (done) => {
-  window.setTimeout(() => {
-    done();
-    // prevent close
-    // done(false)
-  }, 3000);
-};
-const handleCancel = () => {
-  console.log("点上了");
+const handleBeforeOk = async () => {
+  const res = await updateMyUserUsingPost({
+    userName: UserInfoForm.UserName,
+    userAvatar: UserInfoForm.UserAvatar,
+    userProfile: UserInfoForm.UserProfile,
+  });
+  console.log(res);
+  if (res.data.code === 0) {
+    message.success("修改成功");
+    //重新获取用户信息
+    const loginUserStore = useLoginUserStore();
+    loginUserStore.fetchLoginUser();
+    const updateUserInfo = loginUserStore.loginUser;
+    localStorage.setItem("loginUser", JSON.stringify(updateUserInfo));
+    //重新刷新一次页面
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+  } else {
+    message.error("修改失败");
+  }
   emit("close-modal");
 };
+const handleCancel = () => {
+  // console.log("点上了");
+  emit("close-modal");
+};
+
+onMounted(async () => {
+  const loginUserStore = useLoginUserStore();
+  const userId = loginUserStore.loginUser.id;
+  const res = await getUserVoByIdUsingGet({ id: userId });
+  console.log(res.data.data);
+  UserInfoForm.UserName = res.data.data?.userName;
+  UserInfoForm.UserAvatar = res.data.data?.userAvatar;
+  UserInfoForm.UserProfile = res.data.data?.userProfile;
+});
 </script>
 
 <style scoped></style>
