@@ -20,10 +20,7 @@
           />
         </a-form-item>
         <a-form-item field="UserAvatar" label="用户头像">
-          <a-input
-            placeholder="请上传头像"
-            v-model="UserInfoForm.UserAvatar"
-          ></a-input>
+          <PictureUploader biz="user_avatar" @updateUrl="handleNewUrl" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -37,6 +34,7 @@ import {
 } from "@/api/userController";
 import { useLoginUserStore } from "@/store/userStore";
 import message from "@arco-design/web-vue/es/message";
+import PictureUploader from "../PictureUploader.vue";
 import {
   withDefaults,
   defineProps,
@@ -64,7 +62,7 @@ const handleBeforeOk = async () => {
     userAvatar: UserInfoForm.UserAvatar,
     userProfile: UserInfoForm.UserProfile,
   });
-  console.log(res);
+  // console.log(res);
   if (res.data.code === 0) {
     message.success("修改成功");
     //重新获取用户信息
@@ -86,11 +84,17 @@ const handleCancel = () => {
   emit("close-modal");
 };
 
+//获取上传图片的地址
+const handleNewUrl = (url: string) => {
+  UserInfoForm.UserAvatar = url;
+  // console.log(url, "avatarUrl");
+};
+
 onMounted(async () => {
   const loginUserStore = useLoginUserStore();
   const userId = loginUserStore.loginUser.id;
   const res = await getUserVoByIdUsingGet({ id: userId });
-  console.log(res.data.data);
+  // console.log(res.data.data);
   UserInfoForm.UserName = res.data.data?.userName;
   UserInfoForm.UserAvatar = res.data.data?.userAvatar;
   UserInfoForm.UserProfile = res.data.data?.userProfile;

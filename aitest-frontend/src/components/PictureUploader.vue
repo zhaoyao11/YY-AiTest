@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { IconEdit, IconPlus } from "@arco-design/web-vue/es/icon";
-import { ref, withDefaults, defineProps } from "vue";
+import { ref, withDefaults, defineProps, defineEmits } from "vue";
 import { uploadFileUsingPost } from "@/api/fileController";
 import { Message } from "@arco-design/web-vue";
 
@@ -61,11 +61,14 @@ interface Props {
   value?: string;
 }
 
+const emit = defineEmits(["updateUrl"]);
+
 /**
  * 给组件指定初始值
  */
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
+  biz: () => "user_avatar",
 });
 
 const file = ref();
@@ -80,6 +83,7 @@ if (props.value) {
 // 自定义请求
 const customRequest = async (option: any) => {
   const { onError, onSuccess, fileItem } = option;
+  // console.log(props, "props");
 
   const res: any = await uploadFileUsingPost(
     { biz: props.biz },
@@ -96,6 +100,7 @@ const customRequest = async (option: any) => {
     props.onChange?.(url);
     onSuccess();
     console.log(file.value);
+    emit("updateUrl", file.value.url);
   } else {
     Message.error("上传失败，" + res.data.message || "");
     onError(new Error(res.data.message));

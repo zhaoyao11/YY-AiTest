@@ -65,7 +65,7 @@ const formSearchParams = ref<API.UserQueryRequest>({});
 
 //点击搜索用户回调函数
 const handleSubmit = () => {
-  console.log("搜索用户函数触发了");
+  console.log("搜索用户函数触发了" + formSearchParams.value);
   searchParams.value = {
     ...searchParams.value,
     ...formSearchParams.value,

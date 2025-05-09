@@ -2,7 +2,7 @@
   <div>
     <a-card class="appCard" hoverable @click="onClickCard">
       <template #actions>
-        <span class="icon-hover"> <IconShareInternal /> </span>
+        <span class="icon-hover" @click.stop> <IconShareInternal /> </span>
       </template>
       <template #cover>
         <div

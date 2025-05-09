@@ -25,13 +25,11 @@
       <div>
         <template v-if="userInfo.id">
           <a-dropdown @select="handleSelect">
-            <a-space style="margin-top: 15px"
-              ><a-avatar :size="45">
+            <a-space style="margin-top: 15px; cursor: pointer"
+              ><a-avatar :size="38">
                 <img alt="avatar" :src="userInfo.userAvatar" />
               </a-avatar>
-              <span style="font-weight: bolder; font-size: 16px">
-                {{ userInfo.userName }}
-              </span>
+              {{ userInfo.userName }}
             </a-space>
 
             <template #content>

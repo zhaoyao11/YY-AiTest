@@ -145,13 +145,4 @@ export const routes: Array<RouteRecordRaw> = [
     name: "我的答题",
     component: MyAnswerView,
   },
-  {
-    path: "/hide",
-    name: "隐藏页面",
-    component: HomeView,
-    meta: {
-      isHidden: true,
-      access: ACCESS_ENUM.USER,
-    },
-  },
 ];

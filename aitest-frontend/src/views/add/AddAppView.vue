@@ -14,7 +14,7 @@
         <a-input v-model="AppInfo.appDesc" placeholder="请输入应用描述" />
       </a-form-item>
       <a-form-item field="appIcon" label="应用图标">
-        <a-input v-model="AppInfo.appIcon" placeholder="请输入应用图片地址" />
+        <PictureUploader biz="app_icon" @updateUrl="handleNewUrl" />
       </a-form-item>
       <a-form-item field="appType" label="应用类型">
         <a-select
@@ -62,6 +62,7 @@ import {
   getAppVoByIdUsingGet,
 } from "@/api/appController";
 import message from "@arco-design/web-vue/es/message";
+import PictureUploader from "@/components/PictureUploader.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 interface Props {
@@ -101,6 +102,10 @@ const getAppInfo = async () => {
 watchEffect(() => {
   getAppInfo();
 });
+
+const handleNewUrl = (url: string) => {
+  AppInfo.value.appIcon = url;
+};
 
 const handleSubmit = async () => {
   let res;

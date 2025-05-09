@@ -3,7 +3,7 @@
     <h1>{{ appInfo.appName }}</h1>
     <p>{{ appInfo.appDesc }}</p>
     <a-card
-      v-for="(item, index) in questionList"
+      v-for="(item, index) in visibleQuestionList"
       :key="item.title"
       style="width: 60%; margin-top: 20px"
     >
@@ -16,6 +16,7 @@
         />
       </div>
     </a-card>
+    <div class="observer" ref="observerRef"></div>
     <a-spin size="large" :hide-icon="isLoadingHidden" />
 
     <a-button
@@ -29,7 +30,15 @@
 
 <script lang="ts" setup>
 import { getAppVoByIdUsingGet } from "@/api/appController";
-import { withDefaults, defineProps, watchEffect, ref, computed } from "vue";
+import {
+  withDefaults,
+  defineProps,
+  watchEffect,
+  ref,
+  computed,
+  onUnmounted,
+  onMounted,
+} from "vue";
 import API from "@/api";
 import message from "@arco-design/web-vue/es/message";
 import { listQuestionVoByPageUsingPost } from "@/api/questionController";
@@ -74,6 +83,44 @@ const resultAnswerList = computed(() => {
 });
 const ResultList = ref<string[]>([]);
 
+//题目懒加载列表
+const visibleQuestionList = ref<API.QuestionContentDTO[]>([]);
+const observerRef = ref(null);
+//懒加载逻辑
+const observer = new IntersectionObserver((entires) => {
+  entires.forEach((entry) => {
+    if (
+      entry.isIntersecting &&
+      visibleQuestionList.value.length < questionList.value.length
+    ) {
+      //进入可视区
+      loadMoreQueation();
+    }
+  });
+});
+
+//懒加载题目
+const loadMoreQueation = () => {
+  console.log("懒加载触发了");
+  console.log(visibleQuestionList.value, "visibleQuestionList");
+  //每次加载5个题目
+  const newQuestions = questionList.value.slice(
+    visibleQuestionList.value.length,
+    visibleQuestionList.value.length + 5
+  );
+  visibleQuestionList.value.push(...newQuestions);
+};
+
+//初始化就加载5个题目
+onMounted(() => {
+  observer.observe(observerRef.value);
+});
+
+//卸载observer
+onUnmounted(() => {
+  observer.disconnect();
+});
+
 //获取数据
 const loadData = async () => {
   if (!props.appId) {
@@ -109,6 +156,7 @@ const loadData = async () => {
     }
     questionList.value = res_question.data.data.records[0].questionContent;
     message.success("题目获取成功");
+    loadMoreQueation();
   } else {
     message.error("题目获取失败 " + res_question.data.message);
   }

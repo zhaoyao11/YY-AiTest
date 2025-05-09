@@ -212,11 +212,16 @@ watchEffect(() => {
 });
 
 const onSuccess = (result: API.QuestionContentDTO[]) => {
+  console.log(result);
+  console.log(...result);
   message.success(`AI 生成题目成功，生成 ${result.length} 道题目`);
-  QuestionContentList.value = {
-    ...QuestionContentList.value,
-    ...result,
-  };
+  // QuestionContentList.value = {
+  //   ...QuestionContentList.value,
+  //   ...result,
+  // };
+  result.forEach((item) => {
+    QuestionContentList.value.push(item);
+  });
 };
 
 //点击提交按钮
