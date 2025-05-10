@@ -101,8 +101,8 @@ const observer = new IntersectionObserver((entires) => {
 
 //懒加载题目
 const loadMoreQueation = () => {
-  console.log("懒加载触发了");
-  console.log(visibleQuestionList.value, "visibleQuestionList");
+  // console.log("懒加载触发了");
+  // console.log(visibleQuestionList.value, "visibleQuestionList");
   //每次加载5个题目
   const newQuestions = questionList.value.slice(
     visibleQuestionList.value.length,
@@ -137,7 +137,7 @@ const loadData = async () => {
   } else {
     message.error("应用获取失败 " + res_app.data.message);
   }
-  console.log(res_app, "res_app");
+  // console.log(res_app, "res_app");
 
   //获取题目信息
   const res_question = await listQuestionVoByPageUsingPost({
@@ -147,7 +147,7 @@ const loadData = async () => {
     sortField: "createTime",
     sortOrder: "descend",
   });
-  console.log(res_question, "题目信息");
+  // console.log(res_question, "题目信息");
 
   if (res_question.data.code === 0) {
     if (res_question.data.data.records.length === 0) {
@@ -160,7 +160,7 @@ const loadData = async () => {
   } else {
     message.error("题目获取失败 " + res_question.data.message);
   }
-  console.log(res_question, "res_question");
+  // console.log(res_question, "res_question");
 };
 
 // 唯一 id

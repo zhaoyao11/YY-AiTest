@@ -139,7 +139,6 @@ export const routes: Array<RouteRecordRaw> = [
       isHidden: true,
     },
   },
-
   {
     path: "/my/answer",
     name: "我的答题",

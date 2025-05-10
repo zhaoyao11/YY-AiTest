@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import Card from "@/components/HomeCard.vue";
-import { ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import API from "@/api";
 import { listAppVoByPageUsingPost } from "@/api/appController";
 import { REVIEW_STATUS_ENUM } from "@/constants/app";

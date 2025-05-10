@@ -2,8 +2,16 @@
   <div>
     <a-card class="appCard" hoverable @click="onClickCard">
       <template #actions>
-        <span class="icon-hover" @click.stop> <IconShareInternal /> </span>
+        <span class="icon-hover" @click.stop @click="openModal">
+          <IconShareInternal />
+        </span>
       </template>
+      <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel">
+        <template #title> 分享应用 </template>
+        <div>
+          <ShareApp :appId="props.app.id" />
+        </div>
+      </a-modal>
       <template #cover>
         <div
           :style="{
@@ -45,8 +53,9 @@
 <script setup lang="ts">
 import { IconShareInternal } from "@arco-design/web-vue/es/icon";
 import API from "@/api";
-import { defineProps, withDefaults } from "vue";
+import { defineProps, ref, withDefaults } from "vue";
 import { useRouter } from "vue-router";
+import ShareApp from "./ShareApp.vue";
 
 //获取传递的参数
 interface Props {
@@ -61,6 +70,21 @@ const router = useRouter();
 //点击图片后跳转到对应路由
 const onClickCard = () => {
   router.push(`/app/detail/${props.app.id}`);
+};
+
+//点击分享按钮
+const openModal = () => {
+  visible.value = true;
+};
+
+//应用分享
+const visible = ref(false);
+
+const handleOk = () => {
+  visible.value = false;
+};
+const handleCancel = () => {
+  visible.value = false;
 };
 </script>
 <style scoped>

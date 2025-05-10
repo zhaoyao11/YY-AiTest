@@ -39,7 +39,7 @@
           @click="$router.push(`/do/answer/${props.appId}`)"
           >开始答题</a-button
         >
-        <a-button>分享应用</a-button>
+        <a-button @click="openModal">分享应用</a-button>
         <a-button
           v-if="isCurrentUser"
           @click="$router.push(`/add/question/${props.appId}`)"
@@ -56,6 +56,13 @@
           >修改应用</a-button
         >
       </a-space>
+
+      <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel">
+        <template #title> 分享应用 </template>
+        <div>
+          <ShareApp :appId="props.appId" />
+        </div>
+      </a-modal>
     </a-card>
   </div>
 </template>
@@ -68,6 +75,7 @@ import API from "@/api";
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/constants/app";
 import { useLoginUserStore } from "@/store/userStore";
 import message from "@arco-design/web-vue/es/message";
+import ShareApp from "@/components/ShareApp.vue";
 interface Props {
   appId: string;
 }
@@ -97,6 +105,21 @@ const getAppInfo = async () => {
   } else {
     message.error("获取数据失败，" + res.data.message);
   }
+};
+
+//点击分享按钮
+const openModal = () => {
+  visible.value = true;
+};
+
+//应用分享
+const visible = ref(false);
+
+const handleOk = () => {
+  visible.value = false;
+};
+const handleCancel = () => {
+  visible.value = false;
 };
 
 watchEffect(() => {

@@ -99,7 +99,9 @@ const onClickUserInfo = () => {
 };
 //点击退出登录
 const onLoginOut = () => {
-  loginUserStore.logout();
+  // loginUserStore.logout();
+  localStorage.removeItem("loginUser");
+
   //点击后页面自动刷新
   window.location.reload();
 };
