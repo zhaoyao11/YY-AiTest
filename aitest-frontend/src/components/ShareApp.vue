@@ -13,7 +13,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const link = `https://YYtest.com/app/detail/${props.appId}`;
+const link = `http://192.168.2.235:8080/app/detail/${props.appId}`;
 const codeImg = ref();
 
 //设置二维码

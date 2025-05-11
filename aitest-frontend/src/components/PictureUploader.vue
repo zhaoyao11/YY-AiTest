@@ -79,6 +79,7 @@ if (props.value) {
     status: "done",
   };
 }
+console.log(props, "props.value");
 
 // 自定义请求
 const customRequest = async (option: any) => {

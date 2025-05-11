@@ -14,7 +14,10 @@
             <a-avatar>
               <img
                 alt="avatar"
-                src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+                :src="
+                  AppInfo.user?.userAvatar ||
+                  'https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp'
+                "
               />
             </a-avatar>
             <a-typography-text
@@ -102,6 +105,7 @@ const getAppInfo = async () => {
   //   console.log(res);
   if (res.data.code === 0) {
     AppInfo.value = res.data.data;
+    console.log(AppInfo, "Appi");
   } else {
     message.error("获取数据失败，" + res.data.message);
   }

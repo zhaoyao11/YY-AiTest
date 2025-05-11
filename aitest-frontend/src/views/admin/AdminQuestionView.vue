@@ -27,10 +27,17 @@
     >
       <template #questionContent="{ record }">
         <div
-          v-for="question in JSON.parse(record.questionContent)"
+          v-for="(question, index) in JSON.parse(record.questionContent)"
           :key="question.title"
         >
-          {{ question }}
+          {{ index + 1 }}、{{ question.title }} :
+          {{
+            question.options
+              .map((item) => {
+                return `  ${item.key}、${item.value}`;
+              })
+              .join("")
+          }}
         </div>
       </template>
       <template #createTime="{ record }">
@@ -72,6 +79,8 @@ const handleSubmit = () => {
 const initSearchParams = {
   current: 1,
   pageSize: 6,
+  sortOrder: "descend",
+  sortField: "createTime",
 };
 
 //查询参数

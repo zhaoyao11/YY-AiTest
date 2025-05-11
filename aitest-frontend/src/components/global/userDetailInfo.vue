@@ -20,7 +20,11 @@
           />
         </a-form-item>
         <a-form-item field="UserAvatar" label="用户头像">
-          <PictureUploader biz="user_avatar" @updateUrl="handleNewUrl" />
+          <PictureUploader
+            :value="UserInfoForm.UserAvatar"
+            biz="user_avatar"
+            @updateUrl="handleNewUrl"
+          />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -28,10 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  getUserVoByIdUsingGet,
-  updateMyUserUsingPost,
-} from "@/api/userController";
+import { updateMyUserUsingPost } from "@/api/userController";
 import { useLoginUserStore } from "@/store/userStore";
 import message from "@arco-design/web-vue/es/message";
 import PictureUploader from "../PictureUploader.vue";
@@ -68,7 +69,7 @@ const handleBeforeOk = async () => {
     //重新获取用户信息
     const loginUserStore = useLoginUserStore();
     loginUserStore.fetchLoginUser();
-    const updateUserInfo = loginUserStore.loginUser;
+    const updateUserInfo = loginUserStore?.loginUser;
     localStorage.setItem("loginUser", JSON.stringify(updateUserInfo));
     //重新刷新一次页面
     setTimeout(() => {
@@ -90,14 +91,13 @@ const handleNewUrl = (url: string) => {
   // console.log(url, "avatarUrl");
 };
 
-onMounted(async () => {
-  const loginUserStore = useLoginUserStore();
-  const userId = loginUserStore.loginUser.id;
-  const res = await getUserVoByIdUsingGet({ id: userId });
-  // console.log(res.data.data);
-  UserInfoForm.UserName = res.data.data?.userName;
-  UserInfoForm.UserAvatar = res.data.data?.userAvatar;
-  UserInfoForm.UserProfile = res.data.data?.userProfile;
+onMounted(() => {
+  if (localStorage.getItem("loginUser")) {
+    const res = JSON.parse(localStorage.getItem("loginUser"));
+    UserInfoForm.UserName = res.loginUser?.userName;
+    UserInfoForm.UserAvatar = res.loginUser?.userAvatar;
+    UserInfoForm.UserProfile = res.loginUser?.userProfile;
+  }
 });
 </script>
 

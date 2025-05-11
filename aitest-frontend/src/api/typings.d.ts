@@ -730,6 +730,15 @@ declare namespace API {
     userProfile?: string;
     userRole?: string;
   };
+  type loginUser = {
+    createTime?: string;
+    id?: number;
+    updateTime?: string;
+    userAvatar?: string;
+    userName?: string;
+    userProfile?: string;
+    userRole?: string;
+  };
 
   type UserAddRequest = {
     userAccount?: string;

@@ -5,8 +5,6 @@
         <a-col flex="auto" class="content-wrapper">
           <h2>{{ resultData.resultName }}</h2>
           <p>结果描述：{{ resultData.resultDesc }}</p>
-          <p>结果 id：{{ resultData.resultId }}</p>
-          <p>结果得分：{{ resultData.resultScore }}</p>
           <p>我的答案：{{ resultData.choices }}</p>
           <p>应用 id：{{ resultData.appId }}</p>
           <p>应用类型：{{ APP_TYPE_MAP[resultData.appType] }}</p>
@@ -48,7 +46,6 @@
 import { getUserAnswerVoByIdUsingGet } from "@/api/userAnswerController";
 import message from "@arco-design/web-vue/es/message";
 import { withDefaults, defineProps, ref, watchEffect } from "vue";
-import { useRouter } from "vue-router";
 import API from "@/api";
 import dayjs from "dayjs";
 import { APP_TYPE_MAP, APP_SCORING_STRATEGY_MAP } from "@/constants/app";
@@ -60,8 +57,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 console.log(props.data);
-
-const router = useRouter();
 
 const resultData = ref<API.UserAnswerVO>({});
 

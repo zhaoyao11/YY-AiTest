@@ -98,6 +98,8 @@ const formSearchParams = ref<API.AppQueryRequest>({});
 const initSearchParams = {
   current: 1,
   pageSize: 8,
+  sortOrder: "descend",
+  sortField: "createTime",
 };
 
 //查询参数

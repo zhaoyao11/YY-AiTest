@@ -76,6 +76,8 @@ const handleSubmit = () => {
 const initSearchParams = {
   current: 1,
   pageSize: 10,
+  sortOrder: "descend",
+  sortField: "createTime",
 };
 
 //查询参数

@@ -25,6 +25,8 @@ import {
 } from "@/api/appStatisticController";
 import API from "@/api";
 import message from "@arco-design/web-vue/es/message";
+import { REVIEW_STATUS_ENUM } from "@/constants/app";
+import { listAppVoByPageUsingPost } from "@/api/appController";
 
 //各个应用回答数量
 const appAnswerData = ref<API.AppAnswerCountDTO[]>([]);
@@ -38,14 +40,44 @@ onMounted(async () => {
   //热门应用数据
   const res_appAnswer = await getAppAnswerCountUsingGet();
   appAnswerData.value = res_appAnswer.data.data;
-  console.log(appAnswerData.value);
+  validAppArray.value = await getValidApp();
+  console.log(validAppArray, "valid");
+  //过滤掉无效的APP
+  appAnswerData.value = appAnswerData.value.filter((item) =>
+    validAppArray.value.includes(item.appId)
+  );
 });
+
+const validAppArray = ref([]);
+//定义搜索参数
+const initSearchParams = {
+  current: 1,
+  pageSize: 10,
+};
+const searchParams = ref<API.AppQueryRequest>({
+  ...initSearchParams,
+});
+const params = {
+  ...searchParams.value,
+  reviewStatus: REVIEW_STATUS_ENUM.PASS,
+};
+
+//获取有效APP的ID
+const getValidApp = async () => {
+  const res = await listAppVoByPageUsingPost(params);
+  // console.log(res.data.data.records);
+  return res.data.data.records.map((item) => item.id);
+};
 
 //点击查看结果按钮
 const onClickButton = async () => {
   //判断输入框是否为空
   if (!appId.value) {
     message.warning("请输入应用ID");
+    return;
+  }
+  if (!validAppArray.value.includes(appId.value)) {
+    message.warning("请输入有效的应用ID");
     return;
   }
   //应用结果

@@ -11,8 +11,12 @@ router.beforeEach((to, from, next) => {
   //判断用户是否登录
   const isUserLogin = localStorage.getItem("loginUser") !== null;
 
-  //如果进入的是首页
-  if (to.path === "/" || to.path.startsWith("/app/detail")) {
+  //如果进入的是首页或者详情页或者注册页，则直接放行
+  if (
+    to.path === "/" ||
+    to.path.startsWith("/app/detail") ||
+    to.path === "/user/register"
+  ) {
     next();
   } else {
     if (to.path !== "/user/login" && !isUserLogin) {

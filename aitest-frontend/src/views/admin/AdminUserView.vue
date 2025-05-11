@@ -55,7 +55,7 @@ import {
   deleteUserUsingPost,
   listUserByPageUsingPost,
 } from "@/api/userController";
-import { ref, watchEffect } from "vue";
+import { onMounted, reactive, ref, watchEffect } from "vue";
 import API from "@/api";
 import message from "@arco-design/web-vue/es/message";
 import dayjs from "dayjs";
@@ -107,10 +107,25 @@ const onPageChange = (page: number) => {
     current: page,
   };
 };
+var myUserInfo = reactive<API.loginUser>({});
+
+//获得当前用户信息
+onMounted(() => {
+  const userInfoStr = localStorage.getItem("loginUser");
+  if (userInfoStr) {
+    myUserInfo = JSON.parse(userInfoStr).loginUser;
+  }
+});
 
 //删除按钮
+// 删除按钮
 const onDelete = async (record: API.User) => {
-  // console.log("需要删除的用户为：" + record.id + record.userName);
+  console.log("需要删除的用户为：" + record.id + record.userName);
+
+  if (record.id === myUserInfo.id) {
+    message.warning("不能删除自己");
+    return;
+  }
   const res = await deleteUserUsingPost({ id: record.id });
   if (res.data.code === 0) {
     message.success("删除成功");

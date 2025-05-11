@@ -24,14 +24,7 @@
           allow-clear
         />
       </a-form-item>
-      <a-form-item label="结果图标"
-        ><a-input
-          v-model="formData.resultPicture"
-          :style="{ width: '320px' }"
-          placeholder="请输入结果图标"
-          allow-clear
-        />
-      </a-form-item>
+      <a-form-item label="结果图标"><PictureUploader /> </a-form-item>
       <a-form-item label="结果集"
         ><a-input-tag
           v-model="formData.resultProp"
@@ -77,6 +70,7 @@ import {
   editScoringResultUsingPost,
 } from "@/api/scoringResultController";
 import message from "@arco-design/web-vue/es/message";
+import PictureUploader from "@/components/PictureUploader.vue";
 interface Props {
   appId: number;
 }

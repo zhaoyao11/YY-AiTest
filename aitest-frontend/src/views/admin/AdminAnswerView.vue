@@ -25,9 +25,12 @@
       }"
       @page-change="onPageChange"
     >
-      <template #userAvatar="{ record }">
+      <!-- <template #userAvatar="{ record }">
         <a-image width="55" :src="record.userAvatar" />
-      </template>
+      </template> -->
+      <!-- <template #userChoices="{ record }">
+        {{ dayjs(record.createTime).format("YYYY-MM-DD HH:mm:ss") }}
+      </template> -->
       <template #createTime="{ record }">
         {{ dayjs(record.createTime).format("YYYY-MM-DD HH:mm:ss") }}
       </template>
@@ -42,7 +45,6 @@
 </template>
 
 <script setup lang="ts">
-import { deleteUserUsingPost } from "@/api/userController";
 import { ref, watchEffect } from "vue";
 import API from "@/api";
 import message from "@arco-design/web-vue/es/message";
@@ -68,6 +70,8 @@ const handleSubmit = () => {
 const initSearchParams = {
   current: 1,
   pageSize: 8,
+  sortOrder: "descend",
+  sortField: "createTime",
 };
 
 //查询参数
@@ -119,10 +123,12 @@ const columns = [
   {
     title: "id",
     dataIndex: "id",
+    minWidth: 80,
   },
   {
     title: "应用ID",
     dataIndex: "appId",
+    minWidth: 80,
   },
   {
     title: "应用类型",
@@ -135,24 +141,24 @@ const columns = [
   {
     title: "用户答案",
     dataIndex: "choices",
+    width: 300,
   },
-  {
-    title: "评分结果ID",
-    dataIndex: "resultId",
-  },
+
   {
     title: "结果名称",
     dataIndex: "resultName",
+    minWidth: 80,
   },
   {
     title: "结果描述",
     dataIndex: "resultDesc",
+    minWidth: 500,
   },
-  {
-    title: "结果图标",
-    dataIndex: "resultPicture",
-    slotName: "userAvatar",
-  },
+  // {
+  //   title: "结果图标",
+  //   dataIndex: "resultPicture",
+  //   slotName: "userAvatar",
+  // },
   {
     title: "得分",
     dataIndex: "resultScore",
@@ -160,15 +166,18 @@ const columns = [
   {
     title: "用户ID",
     dataIndex: "userId",
+    minWidth: 80,
   },
   {
     title: "创建时间",
     dataIndex: "createTime",
+    minWidth: 80,
     slotName: "createTime",
   },
   {
     title: "更新时间",
     dataIndex: "updateTime",
+    minWidth: 80,
     slotName: "updateTime",
   },
   {

@@ -7,6 +7,7 @@
         button-text="搜索"
         size="large"
         search-button
+        @search="onSearch"
       />
     </div>
 
@@ -31,7 +32,7 @@
 
 <script lang="ts" setup>
 import Card from "@/components/HomeCard.vue";
-import { onMounted, ref, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 import API from "@/api";
 import { listAppVoByPageUsingPost } from "@/api/appController";
 import { REVIEW_STATUS_ENUM } from "@/constants/app";
@@ -61,7 +62,7 @@ const loadData = async () => {
 
   if (res.data.code === 0) {
     dataList.value = res.data.data.records;
-    // console.log(dataList.value);
+    console.log(dataList.value);
 
     total.value = res.data.data.total;
   } else {
@@ -74,6 +75,16 @@ const onPageChange = (current: number) => {
     ...searchParams.value,
     current,
   };
+};
+
+//点击搜索应用
+const onSearch = (value: string) => {
+  console.log(value);
+  searchParams.value = {
+    ...initSearchParams,
+    appName: value,
+  };
+  loadData;
 };
 
 //数据监听钩子

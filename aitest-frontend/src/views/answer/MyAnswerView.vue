@@ -43,9 +43,9 @@
     }"
     @page-change="onPageChange"
   >
-    <template #resultPicture="{ record }">
+    <!-- <template #resultPicture="{ record }">
       <a-image width="64" :src="record.resultPicture" />
-    </template>
+    </template> -->
     <template #appType="{ record }">
       {{ APP_TYPE_MAP[record.appType] }}
     </template>
@@ -83,6 +83,8 @@ const formSearchParams = ref<API.UserAnswerQueryRequest>({});
 const initSearchParams = {
   current: 1,
   pageSize: 10,
+  sortOrder: "descend",
+  sortField: "createTime",
 };
 
 const searchParams = ref<API.UserAnswerQueryRequest>({
@@ -155,28 +157,32 @@ const columns = [
   {
     title: "id",
     dataIndex: "id",
+    minWidth: 110,
   },
   {
     title: "选项",
     dataIndex: "choices",
+    minWidth: 110,
   },
-  {
-    title: "结果 id",
-    dataIndex: "resultId",
-  },
+  // {
+  //   title: "结果 id",
+  //   dataIndex: "resultId",
+  //   minWidth: 110,
+  // },
   {
     title: "名称",
     dataIndex: "resultName",
+    minWidth: 110,
   },
   {
     title: "描述",
     dataIndex: "resultDesc",
   },
-  {
-    title: "图片",
-    dataIndex: "resultPicture",
-    slotName: "resultPicture",
-  },
+  // {
+  //   title: "图片",
+  //   dataIndex: "resultPicture",
+  //   slotName: "resultPicture",
+  // },
   {
     title: "得分",
     dataIndex: "resultScore",
@@ -184,11 +190,13 @@ const columns = [
   {
     title: "应用 id",
     dataIndex: "appId",
+    minWidth: 110,
   },
   {
     title: "应用类型",
     dataIndex: "appType",
     slotName: "appType",
+    minWidth: 80,
   },
   {
     title: "评分策略",
@@ -199,6 +207,7 @@ const columns = [
     title: "创建时间",
     dataIndex: "createTime",
     slotName: "createTime",
+    minWidth: 80,
   },
   {
     title: "操作",

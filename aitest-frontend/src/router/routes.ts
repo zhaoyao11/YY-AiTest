@@ -33,7 +33,7 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/admin",
-    name: "管理页面",
+    name: "用户管理页面",
     component: AdminUserView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
