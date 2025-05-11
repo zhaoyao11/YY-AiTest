@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+yudada-backend/src/main/resources/application.yml
+yudada-backend/src/main/java/com/yupi/yudada/config/RedissonConfig.java
 
 
 # local env files
